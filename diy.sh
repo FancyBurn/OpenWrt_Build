@@ -22,6 +22,25 @@ echo "repo: ${repo}; owner: ${owner};"
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
 
+# 重启自动修改随机MAC
+cat << 'EOF' |  tee package/base-files/files/etc/rc.local
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+random_mac(){
+	local i; for i in wireless.@wifi-iface[0] network.lan; do
+		local mac; while [ "${#mac}" != "17" ]; do
+			mac=00$(hexdump -n5 -e '/1 ":%02x"' /dev/urandom)
+		done
+		echo ${mac}
+		uci set ${i}.macaddr=${mac}
+		uci commit ${i%%.*}
+		unset mac
+	done
+}; random_mac
+
+exit 0
+EOF
+
 # Modify hostname
 #sed -i 's/OpenWrt/OpenWrting/g' package/base-files/files/bin/config_generate
 

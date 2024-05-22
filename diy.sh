@@ -27,7 +27,7 @@ cat << 'EOF' |  tee package/base-files/files/etc/rc.local
 # Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 random_mac(){
-	local i; for i in wireless.@wifi-iface[0] network.lan network.wan network.wan6; do
+	local i; for i in wireless.@wifi-iface[0] wireless.@wifi-iface[1]  wireless.@wifi-iface[2] network.@interface[0] network.@interface[1] network.@interface[2] network.@interface[3] network.@interface[4] network.@interface[5]; do
 		local mac; while [ "${#mac}" != "17" ]; do
 			mac=00$(hexdump -n5 -e '/1 ":%02x"' /dev/urandom)
 		done

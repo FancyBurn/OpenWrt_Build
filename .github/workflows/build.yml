@@ -80,12 +80,6 @@ jobs:
 
           df -h
 
-      - name: Install UPX manually
-        run: |
-          wget https://github.com/upx/upx/releases/download/v4.2.4/upx-4.2.4-amd64_linux.tar.xz
-          tar -xf upx-4.2.4-amd64_linux.tar.xz
-          sudo mv upx-4.2.4-amd64_linux/upx /usr/local/bin/
-          upx --version # 验证安装
       - name: make
         run: |
           sudo mkdir -p /mnt/openwrt
